@@ -16,46 +16,45 @@
 
 void print_istack(char *msg, istack s)
 {
-	istack temp = s;
+	istack temp=s;
 	printf("%s top: ",msg);
-	while(temp != NULL){
+	while(temp!=NULL) {
 		printf("%d ",temp->value);
-		temp = temp->next;
+		temp=temp->next;
 	}
-	printf(": bottom");
-	printf("\n");
+  	printf(" : bottom\n");
 }
 
 void ipush(istack *s, int val)
 {
-	istack new1;
-	new1 = malloc(sizeof(struct inode));
-	new1->value = val;
-	if(*s == NULL){
-		new1->next = NULL;
-		*s = new1;
+	istack n=malloc(sizeof(struct inode));
+	n->value=val;
+	if(*s == NULL) {
+		n->next=NULL;
+		*s=n;
 	}
-	else{
-		new1->next = *s;
-		*s = new1;
+	else {
+		n->next=*s;
+		*s=n;
 	}
 }
 
 int ipop(istack *s)
 {
-	int pop_int = 0;
+	int x;
+	istack t;
 	if(*s == NULL){
-		printf("Error: pop(s, *val) empty stack s\n");
-		pop_int = -1;
+		printf("Error: pop(s, *val) empty stack s\n)");
+		x=-1;
 	}
-	else{
-		istack temp = *s;
+	else {
+		t=*s;
 		*s = (*s)->next;
-		pop_int = temp->value;
-		temp->next = NULL;
-		free(temp);
+		x=t->value;
+		t->next = NULL;
+		free(t);
 	}
-	return pop_int;
+	return (x);
 }
 
 /* Story 7
@@ -66,35 +65,35 @@ int ipop(istack *s)
 
 int eval_postfix(char *expr)
 {
-	istack s = NULL;
-	int opr2=0,opr1=0,valu=0,result=0;
-	for(int i = 0 ; expr[i] != '\0' ; i++){
-		if(expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/'){
-			opr2 = ipop(&s);
-			opr1 = ipop(&s);
-			switch(expr[i]){
+	istack top = NULL;
+	int op2=0,op1=0,val=0,r,p;
+	for(int i = 0 ; expr[i] != '\0' ; i++) {
+		if(expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/' || expr[i]== '^') {
+			op1 = ipop(&top);
+			op2 = ipop(&top);
+			switch(expr[i]) {
 				case '+' :
-					valu = opr1+opr2;
+					val = op2+op1;
 					break;
 				case '-' :
-					valu = opr1-opr2;
+					val = op2-op1;
 					break;
 				case '*' :
-					valu = opr1*opr2;
+					val = op2*op1;
 					break;
 				case '/' :
-					valu = opr1/opr2;
+					val = op2/op1;
 					break;
 				default:
-					valu = 0;
+					val = 0;
 			}
-			ipush(&s,valu);
+			ipush(&top,val);
 		}
-		else if(expr[i] >= '0' && expr[i] <= '9'){
-			int k = expr[i] - '0';
-			ipush(&s,k);
+		if(expr[i] >= '0' && expr[i] <= '9'){
+			p = expr[i]-'0';
+			ipush(&top,p);
 		}
 	}
-	result = ipop(&s);
-	return result;
+	r = ipop(&top);
+	return r;
 }
