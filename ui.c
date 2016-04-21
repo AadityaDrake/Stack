@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "stack.h"
+#include "expressions.h"
 #include "ui.h"
 
 /*****************************************
@@ -28,39 +29,37 @@ void print_help(void)
 int initialize(int argc, char *argv[])
 {
   /* argv[0] is the name of the program */
-  int arg = 1;
+  int arg = 1,q;
   char *parameter = "";
+char expr[20];
 
   infile = stdin;         // input file defaults to stdin
   outfile = stdout;       // output file defaults to stdout
   errfile = stderr;       // error file; defaults to stderr
   while(arg < argc) {
     parameter = argv[arg];
-    printf("argv[%d] = %s\n",arg,parameter);
-    arg++;
-    /* Story 1:
-     * As a programmer, I want to print out all of the strings that
-     * are passed as parameters to my program so I can see what they
-     * are.
-     * code commented out after story is completed.
-     */
+        printf("argv[%d]=%s\n",arg,parameter);
+        arg++;
 
     switch(parameter[1]) {
-	case 'h' :
-		print_help();
-		break;
-
-	case 'x' :
-		printf("Error: unknown parameter x\n");
-		print_help();
-		break;
-    /* Story 2
-     * AThe call stack -h causes the help message to be printed and
-     * the program to execute; stack -s causes the help message to be
-     * printed and the program to terminate; stack causes the program
-     * to execute.
-     */
-
+        case 'x':
+                printf("error: unknown parameter -x\n");
+                print_help();
+                        break;
+        case 'h':
+                print_help();
+                        break;
+        case 'b':
+                printf("Enter Expression :: ");
+                scanf("%s", expr);
+                test_match_brackets(expr);
+			break;
+        case 'p':
+                printf("Enter Expression :: ");
+                scanf("%s", expr);
+                q=eval_postfix(expr);
+                printf("Evaluated No. is %d\n",q);
+                        break;
     /* Story 5
      * As a user, I want to be able to enter a set of brackets to see
      * if they are matched at the command line, so I can use the
