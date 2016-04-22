@@ -88,7 +88,8 @@ void test_match_brackets(char *brackets)
         else {
                 printf("%s\n", brackets);
                 fflush(stdout);
-                for (int i = 0; i < mismatch; i++)                              printf(" ");
+                for (int i = 0; i < mismatch; i++)
+			 printf(" ");
                 printf("^ mismatch\n");
                 fflush(stdout);
         }
@@ -98,6 +99,7 @@ int match_brackets(char *expression)
 {
         stack s = NULL;
         char top = '\0';
+	int r;
 
         for(int i=0; expression[i] != '\0'; i++) {
                 if (expression[i] == '(' || expression[i] == '{' ||
@@ -107,21 +109,28 @@ int match_brackets(char *expression)
 		else if (expression[i] == ')' || expression[i] == '}' ||
 			 expression[i] == ']' || expression[i] == '>') {
                         if (s==NULL) {
-                                return i;
+                                r = i;
                         }
                         else {
                                 top = pop(&s);
                                 if (top == '(' && expression[i] == ')')
-                                        return -1;
-                                if (top == '{' && expression[i] == '}')
-                                        return -1;
-                                if (top == '[' && expression[i] == ']')
-                                        return -1;
-                                if (top == '<' && expression[i] == '>')
-                                        return -1;
-                                return i;
+                                        r = -1;
+                                else
+					if (top == '{' && expression[i] == '}') {
+                                        	r = -1;
+					}
+                                	else
+						if (top == '[' && expression[i] == ']') {
+                                		        r = -1;
+						}
+                                		else
+							if (top == '<' && expression[i] == '>') {
+			                                       r = -1;
+							}
+				else
+                                	r = i;
                         }
                 }
         }
-	return 0;
+	return r;
 }
