@@ -2,7 +2,14 @@
 #include <stdlib.h>
 #include "ui.h"
 #include "stack.h"
+#include "queue.h"
 #include "expressions.h"
+
+/***************************************************
+ *
+ * Stacks
+ *
+ ***************************************************/
 
 /* Story 1 and 2 are tested at the command line */
 
@@ -142,20 +149,112 @@ void test7(void)
   test_postfix("1 2 -");
   test_postfix("3 2 *");
   test_postfix("4 2 /");
-  //test_postfix("20 4 +");
-  //test_postfix("2 40 +");
-  //test_postfix("20 40 +");
-  //test_postfix("10 20 40 + -");
-  //test_postfix("10 20 40 + /");
-  //test_postfix("10 20 + 40 -");
-  //test_postfix("10 20 * 40 -");
-  test_postfix("6 9 4 2 / * +");
-  test_postfix("8 9 + 3 - 7 / 6 *");
-  test_postfix("6 8 * 1 + 7 / 7 + 5 - 3 *");
-  test_postfix("2 6 + 9 * 5 - 4 -");
-  test_postfix("3 6 * 9 / 1 + 5 *");
+  test_postfix("20 4 +");
+  test_postfix("2 40 +");
+  test_postfix("20 40 +");
+  test_postfix("10 20 40 + -");
+  test_postfix("10 20 40 + /");
+  test_postfix("10 20 + 40 -");
+  test_postfix("10 20 * 40 -");
 }
 
+/***************************************************
+ *
+ * Stacks
+ *
+ ***************************************************/
+
+queue new_queue(void)
+{
+  queue *q = malloc(sizeof(queue));
+  q->front = NULL;
+  q->rear = NULL;
+  return *q;
+}
+
+queue make_test_queue(void)
+{
+  queue *q = NULL;
+  q_node qn = NULL;
+
+  q = malloc(sizeof(queue));
+  q->front = q->rear = malloc(sizeof(q_node));
+  q->rear->value = 'a';
+  q->rear->next = NULL;
+
+  qn = malloc(sizeof(q_node));
+  qn->value = 'b';
+  qn->next = NULL;
+  q->rear->next = qn;
+  q->rear = qn;
+
+  qn = malloc(sizeof(q_node));
+  qn->value = 'c';
+  qn->next = NULL;
+  q->rear->next = qn;
+  q->rear = qn;
+
+  return *q;
+}
+
+/* Story 8
+ * As a programmer, I want to be able to print a queue, so I can see
+ * what is in it.
+ */
+
+void test8(void)
+{
+  queue q = make_test_queue();
+
+  printf("Test 8: print_queue\n");
+  fflush(stdout);
+  print_queue("Test queue (a b c) ", q);
+}
+
+/* Story 9
+ * As a programmer, I want to be able to enqueue a character in a
+ * queue, so I can learn how queues work.
+ */
+
+void test9(void)
+{
+  queue q = new_queue();
+
+  printf("Test 9: enqueue\n");
+  fflush(stdout);
+  q = enqueue(q, 'a');
+  print_queue("added 'a'", q);
+  q = enqueue(q, 'b');
+  print_queue("added 'b'", q);
+  q = enqueue(q, 'c');
+  print_queue("added 'c'", q);
+}
+
+/* Story 10
+ * As a programmer, I want to dequeue an item from a queue so I can
+ * learn to use queues.
+ */
+
+void test10(void)
+{
+  queue q = make_test_queue();
+
+  printf("Test 10: dequeue\n");
+  fflush(stdout);
+  print_queue("Test queue (a b c) ", q);
+  printf("Retrieved %c ", dequeue(&q));
+  print_queue("queue is now ", q);
+  q = enqueue(q, 'd');
+  print_queue("added 'd'", q);
+  printf("Retrieved %c ", dequeue(&q));
+  print_queue("queue is now ", q);
+  printf("Retrieved %c ", dequeue(&q));
+  print_queue("queue is now ", q);
+  printf("Retrieved %c ", dequeue(&q));
+  print_queue("queue is now ", q);
+  printf("Retrieved %c ", dequeue(&q));
+  print_queue("queue is now ", q);
+}
 
 int main(void)
 {
@@ -170,5 +269,10 @@ int main(void)
   test5();
   test6();
   test7();
+
+  printf("%s*\n* Queues\n*\n%s", stars, stars);
+  test8();
+  test9();
+  test10();
 
 }
