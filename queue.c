@@ -16,6 +16,11 @@
 
 void pq(q_node q)
 {
+	q_node front = q;
+	while(front!=NULL) {
+		printf("%c ",front->value);
+		front=front->next;
+	}
 }
 
 void print_queue(char *msg, queue q)
@@ -43,6 +48,18 @@ void print_queue_plus(char *before, queue q, char *after)
 
 queue enqueue(queue q, char val)
 {
+	q_node new1 =malloc(sizeof (q_node));
+	new1->value = val;
+	if(q.front == NULL) {
+		q.front = new1;
+		q.rear = new1;
+	}
+	else {
+		q.rear->next = new1;
+		q.rear = new1;
+	}
+	q.rear->next = NULL;
+	return q;
 }
 
 /* Story 10
@@ -52,4 +69,17 @@ queue enqueue(queue q, char val)
 
 char dequeue(queue *q)
 {
+	q_node temp;
+	char x;
+	if(q->front == NULL) {
+		printf("Error: dequeue of empty queue \n");
+	}
+	else {
+		temp=q->front;
+		q->front = q->front->next;
+		temp->next = NULL;
+		x = temp->value;
+		free(temp);
+	}
+	return x;
 }
