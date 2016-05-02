@@ -223,13 +223,13 @@ void test9(void)
   printf("Test 9: enqueue\n");
   fflush(stdout);
   q = enqueue(q, 'a');
-  printf("Returning front: a :rear");
+  printf("Returning  front: a :rear");
   print_queue("\nadded 'a'", q);
   q = enqueue(q, 'b');
-  printf("Returning front: a b :rear");
+  printf("Returning  front: a b :rear");
   print_queue("\nadded 'b'", q);
   q = enqueue(q, 'c');
-  printf("Returning front: a b c :rear");
+  printf("Returning  front: a b c :rear");
   print_queue("\nadded 'c'", q);
 }
 
