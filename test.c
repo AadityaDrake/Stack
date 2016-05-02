@@ -248,6 +248,7 @@ void test10(void)
   printf("Retrieved %c ", dequeue(&q));
   print_queue("queue is now ", q);
   q = enqueue(q, 'd');
+  printf("Returning  front: b c d :rear\n");
   print_queue("added 'd'", q);
   printf("Retrieved %c ", dequeue(&q));
   print_queue("queue is now ", q);
